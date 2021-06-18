@@ -1,0 +1,39 @@
+<Window x:Class="MarketInfo.Viewer.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:prism="http://prismlibrary.com/"
+        xmlns:local="clr-namespace:MarketInfo.Viewer.Views"
+        prism:ViewModelLocator.AutoWireViewModel="True"
+        Title="MarketInfo" Height="900" Width="1600">
+    <DockPanel LastChildFill="True">
+        <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Center" VerticalAlignment="Stretch">
+            <Button Command="{Binding RefreshSymbolsDelegateCommand}" Margin="10">Refresh Symbols</Button>
+
+            <DockPanel Margin="2">
+                <TextBlock
+                Margin="0,0,4,0"
+                Text="Search: "
+                VerticalAlignment="Center"/>
+                <TextBox Name="SymbolSearchTextBox" Text="{Binding SearchText}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="TextChanged">
+                            <i:InvokeCommandAction
+                                Command="{Binding FilterSymbolsCommand}"
+                                CommandParameter="{Binding Text, ElementName=SymbolSearchTextBox}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </TextBox>
+            </DockPanel>
+
+            <ListBox
+                ItemsSource="{Binding FilteredSymbols}"
+                SelectedItem="{Binding SelectedSymbol}"
+                Margin="10"
+                Height="150"
+                VirtualizingStackPanel.VirtualizationMode="Recycling"/>
+        </StackPanel>
+
+        <local:StockInspectorView/>
+    </DockPanel>
+</Window>

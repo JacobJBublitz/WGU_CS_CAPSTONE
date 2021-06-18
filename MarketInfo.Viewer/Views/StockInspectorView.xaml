@@ -1,0 +1,47 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                     xmlns:prism="http://prismlibrary.com/"
+
+             xmlns:local="clr-namespace:MarketInfo.Viewer.Views"
+    xmlns:parent="clr-namespace:MarketInfo.Viewer"
+    xmlns:oxy="http://oxyplot.org/wpf"
+    x:Class="MarketInfo.Viewer.Views.StockInspectorView"
+        prism:ViewModelLocator.AutoWireViewModel="True"
+
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="800">
+    <DockPanel LastChildFill="True">
+        <local:StockInfoView DockPanel.Dock="Top"/>
+
+        <DockPanel LastChildFill="True">
+            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                <Label>Chart Range:</Label>
+
+                <ComboBox
+                    ItemsSource="{Binding Path=SelectedChartRange, Converter={parent:EnumToCollectionConverter}, Mode=OneTime}"
+                    SelectedValuePath="Item1"
+                    DisplayMemberPath="Item2"
+                    SelectedValue="{Binding SelectedChartRange}"/>
+            </StackPanel>
+
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <oxy:PlotView
+                    Grid.Row="0"
+                    Model="{Binding PriceModel}" x:Name="PricePlot" />
+
+                <oxy:PlotView
+                    Grid.Row="1"
+                    Model="{Binding AuxilaryModel,Mode=OneWay}"
+                    x:Name="AuxilaryPlot"/>
+            </Grid>
+        </DockPanel>
+    </DockPanel>
+</UserControl>
